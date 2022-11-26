@@ -1,0 +1,10 @@
+With numerical features, StandardScaler is usually a good solution but it is not adapted sometimes:
+
+When there are some outliers, the mean and std. dev. will be impacted. In this case, a RobustScaler is more adapted since it will use the median and some quantiles.
+Some features might have a “weird” distribution where StandardScaler will not work properly. Let’s take the example of the digits dataset (cf. sklearn.datasets.load_digits — scikit-learn 1.0.2 documentation). For each pixel, across all images, there is a high probability to have a 0-value. In this case, the StandardScaler will do something that is not adapted and the MinMaxScaler will be better.
+When dealing with a sparse matrix, the MaxAbsScaler should be used to keep 0-value as-is and not break the sparsity property.
+For categorical features, OneHotEncoder and OrdinalEncoder are good baselines (and should be chosen depending on the predictive model and the type of feature). We would not recommend rescaling these features after the encoding:
+
+The range of the features once encoded is usually close to the range of the numerical scaled values. Gradient-based optimizers will work fine in these conditions.
+Since that the distribution of these features can be quite weird as well. For instance, with OHE features, you will have a lot of 0-value in comparison to 1-value sometimes. Applying a StandardScaler in this case is not a good thing as stated earlier.
+Those are probably the most general rules.
